@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {QuestionnaireList} from './QuestionnaireList'
 import axios from 'axios'
 
 export class PlayQuestion extends Component {
@@ -7,13 +6,18 @@ export class PlayQuestion extends Component {
         super(props)
         this.state = {
             question: {},
-            selectedAnsId : ''
+            selectedAnsId: ''
         }
         this.handleChange = this.handleChange.bind(this)
+        this.onSubmitClick = this.onSubmitClick.bind(this)
     }
 
     componentDidMount() {
-        axios.get("http://localhost:8000/getQuestion/"+ this.props.match.params.questionId)
+        this.getNextQuestion()
+    }
+
+    getNextQuestion() {
+        axios.get("http://localhost:8000/getQuestion/" + this.props.match.params.questionId, {withCredentials: true})
             .then(res => {
                 console.log(res)
                 this.setState({
@@ -28,8 +32,23 @@ export class PlayQuestion extends Component {
         })
     }
 
+    answerQuestion() {
+        const data = {"a_id": this.state.selectedAnsId, "questionnaire_id": this.props.match.params.questionId}
+        console.log(data)
+        axios.post("http://localhost:8000/answerQuestion", data, {withCredentials : true})
+            .then(res => {
+                console.log(res)
+                //this.getNextQuestion()
+            })
+    }
+
+    onSubmitClick(e) {
+        e.preventDefault()
+        this.answerQuestion()
+    }
+
     render() {
-        const {question} =  this.state
+        const {question} = this.state
         const answers = question['answers']
         const questionTitle = question['q_name']
         if (typeof answers === 'undefined') {
@@ -42,7 +61,7 @@ export class PlayQuestion extends Component {
                     answers.map(answer => (
                         <label className="radio" key={answer.ans_id}>
                             <input type="radio"
-                                   name="test"
+                                   name="answerRadioInput"
                                    onChange={this.handleChange}
                                    value={answer.ans_id}
                                    checked={this.state.selectedAnsId === answer.ans_id}
@@ -51,6 +70,7 @@ export class PlayQuestion extends Component {
                         </label>
                     ))
                 }
+                <input type="submit" value="Submit" onClick={this.onSubmitClick}/>
             </form>
         </div>);
     }
