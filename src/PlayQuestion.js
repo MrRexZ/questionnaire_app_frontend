@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
+import {SERVER_API_URL, SERVER_PORT} from "./constants/environment";
 
 export class PlayQuestion extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export class PlayQuestion extends Component {
     }
 
     getNextQuestion() {
-        axios.get("http://localhost:8000/getQuestion/" + this.props.match.params.questionId, {withCredentials: true})
+        axios.get(SERVER_API_URL + ":" + SERVER_PORT + "/getQuestion/" + this.props.match.params.questionId, {withCredentials: true})
             .then(res => {
                 console.log(res)
 
@@ -38,8 +39,9 @@ export class PlayQuestion extends Component {
     }
 
     answerQuestion() {
+
         const data = {"a_id": this.state.selectedAnsId, "questionnaire_id": this.props.match.params.questionId}
-        axios.post("http://localhost:8000/answerQuestion", data, {withCredentials : true})
+        axios.post(SERVER_API_URL + ":" + SERVER_PORT + "/answerQuestion", data, {withCredentials : true})
             .then(res => {
                 console.log(res)
                 this.getNextQuestion()

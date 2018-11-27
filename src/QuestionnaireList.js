@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios'
 import {Link} from "react-router-dom";
+import {SERVER_API_URL, SERVER_PORT} from "./constants/environment";
 
 export class QuestionnaireList extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ export class QuestionnaireList extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/getQuestionnaireList/`)
+        axios.get(SERVER_API_URL + ":" + SERVER_PORT + "/getQuestionnaireList/")
             .then(res => {
                 console.log(res.data);
                 this.setState({questionnaireList: res.data});
