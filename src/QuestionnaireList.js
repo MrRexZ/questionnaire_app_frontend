@@ -21,7 +21,8 @@ export class QuestionnaireList extends Component {
     render() {
         const {questionnaireList} = this.state
         return (<div>
-            <ul>
+            Select which questionnaire to solve : <br />
+            <ol>
                 {questionnaireList.map(item => (
                     <li key={item}>
                         <Link to={{
@@ -29,7 +30,7 @@ export class QuestionnaireList extends Component {
                         }}>{item}</Link>
                     </li>
                 ))}
-            </ul>
+            </ol>
         </div>)
     }
 }

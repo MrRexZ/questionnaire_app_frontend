@@ -64,7 +64,7 @@ export class PlayQuestion extends Component {
         }
         return (<div>
             <form>
-                <label>{questionTitle}</label>
+                <label>{questionTitle}</label> <br/>
                 {
                     answers.map(answer => (
                         <label className="radio" key={answer.ans_id}>
@@ -75,6 +75,7 @@ export class PlayQuestion extends Component {
                                    checked={this.state.selectedAnsId === answer.ans_id}
                             />
                             {answer.ans_name}
+                            <br/>
                         </label>
                     ))
                 }
