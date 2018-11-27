@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios'
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 
 export class QuestionnaireList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            questionnaireList : []
+            questionnaireList: []
         }
     }
 
@@ -13,7 +14,7 @@ export class QuestionnaireList extends Component {
         axios.get(`http://localhost:8000/getQuestionnaireList/`)
             .then(res => {
                 console.log(res.data);
-                this.setState({questionnaireList : res.data});
+                this.setState({questionnaireList: res.data});
             })
     }
 
@@ -23,7 +24,9 @@ export class QuestionnaireList extends Component {
             <ul>
                 {questionnaireList.map(item => (
                     <li key={item}>
-                        {item}
+                        <Link to={{
+                            pathname: '/playQuestion/' + item
+                        }}>{item}</Link>
                     </li>
                 ))}
             </ul>
