@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 
 export class PlayQuestion extends Component {
     constructor(props) {
         super(props)
         this.state = {
             question: {},
-            selectedAnsId: ''
+            selectedAnsId: '',
+            toQuestionEnd: false,
         }
         this.handleChange = this.handleChange.bind(this)
         this.onSubmitClick = this.onSubmitClick.bind(this)
@@ -20,7 +22,10 @@ export class PlayQuestion extends Component {
         axios.get("http://localhost:8000/getQuestion/" + this.props.match.params.questionId, {withCredentials: true})
             .then(res => {
                 console.log(res)
+
+                const isComplete = res.data['complete']
                 this.setState({
+                    toQuestionEnd: isComplete,
                     question: res.data
                 })
             })
@@ -34,11 +39,10 @@ export class PlayQuestion extends Component {
 
     answerQuestion() {
         const data = {"a_id": this.state.selectedAnsId, "questionnaire_id": this.props.match.params.questionId}
-        console.log(data)
         axios.post("http://localhost:8000/answerQuestion", data, {withCredentials : true})
             .then(res => {
                 console.log(res)
-                //this.getNextQuestion()
+                this.getNextQuestion()
             })
     }
 
@@ -51,6 +55,10 @@ export class PlayQuestion extends Component {
         const {question} = this.state
         const answers = question['answers']
         const questionTitle = question['q_name']
+        const dialog = question['dialog']
+        if (this.state.toQuestionEnd === true) {
+            return <Redirect to={{pathname: "/finishQuestion", state: {dialogResponse: dialog}}} />
+        }
         if (typeof answers === 'undefined') {
             return null
         }
