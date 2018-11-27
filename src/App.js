@@ -4,6 +4,7 @@ import {PlayQuestion} from "./PlayQuestion";
 import './App.css';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {QuestionEnd} from "./QuestionEnd";
+import {Home} from './Home'
 
 
 class App extends Component {
@@ -19,13 +20,16 @@ class App extends Component {
                             <Link to="/questionnaire">Open Questionnaire List</Link>
                         </li>
                     </ul>
-                    <hr />
-                    <Route path="/questionnaire" component={QuestionnaireList} />
-                    <Route path="/playQuestion/:questionId" component={PlayQuestion} />
-                    <Route path="/finishQuestion" component={QuestionEnd} />
+                    <hr/>
+
+                    <Route exact path="/" component={Home} />
+                    <Route path="/questionnaire" component={QuestionnaireList}/>
+                    <Route path="/playQuestion/:questionId" component={PlayQuestion}/>
+                    <Route path="/finishQuestion" component={QuestionEnd}/>
                 </div>
             </Router>
         );
+
     }
 }
 
