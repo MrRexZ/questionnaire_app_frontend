@@ -21,13 +21,13 @@ export class QuestionnaireList extends Component {
     render() {
         const {questionnaireList} = this.state
         return (<div>
-            Select which questionnaire to solve : <br />
+            Select which questionnaire to play : <br />
             <ol>
-                {questionnaireList.map(item => (
-                    <li key={item}>
+                {questionnaireList.map(questionnaire => (
+                    <li key={questionnaire.id}>
                         <Link to={{
-                            pathname: '/playQuestion/' + item
-                        }}>{item}</Link>
+                            pathname: '/playQuestion/' + questionnaire.id
+                        }}>{questionnaire.questionnaire_name}</Link>
                     </li>
                 ))}
             </ol>
